@@ -1,17 +1,11 @@
 import requests
 import smtplib
-from email.mime.text import MIMEText
-from email.header import Header
-import socket  # 用于端口检测
-import base64  # 用于编解码
-import json  # 用于Json解析
 import os  # 用于导入系统变量
 import sys  # 实现 sys.exit
 import logging  # 用于日志输出
 import time  # 时间
-import re  # 正则过滤
-import hmac
-import struct
+#from email.mime.text import MIMEText
+#from email.header import Header
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')  # Info级日志
 logger = logging.getLogger(__name__)  # 主模块
