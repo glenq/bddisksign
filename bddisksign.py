@@ -1,9 +1,4 @@
-# -*- coding:utf-8 -*-
-# @Time : 2022/4/11 10:30
-# @Author: qcodeq
-# @File : 网盘签到.py
 import requests
-import time
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
@@ -18,6 +13,8 @@ import re  # 正则过滤
 import hmac
 import struct
 
+logging.basicConfig(level=logging.INFO, format='%(message)s')  # Info级日志
+logger = logging.getLogger(__name__)  # 主模块
 
 def check_in(cookie):
     headers = {
