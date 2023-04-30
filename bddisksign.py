@@ -10,6 +10,25 @@ import time  # 时间
 logging.basicConfig(level=logging.INFO, format='%(message)s')  # Info级日志
 logger = logging.getLogger(__name__)  # 主模块
 
+def issvip(cookie):
+    headers = {
+        'User-Agent': 'netdisk;11.19.11;M2012K11AC;android-android;11;JSbridge4.4.0;jointBridge;1.1.0',
+        'Referer': 'https://pan.baidu.com/disk/main',
+        'Cookie': cookie,
+    }
+
+    info_url = 'https://pan.baidu.com/rest/2.0/membership/user/info?method=query&clienttype=0&app_id=250528&web=1&dp-logid=84670500916096520014'
+    
+    response_json = requests.get(url=info_url, headers=headers).json()
+ 
+    if response_json['error_code'] == 0:
+        is_svip = response_json['user_info']['is_svip']
+        username= response_json['user_info']['username']        
+        print('用户：'+username+', svip状态：' + str(is_svip))
+    else:
+        print(response_json)
+ 
+
 def check_in(cookie):
     headers = {
         'User-Agent': 'netdisk;11.19.11;M2012K11AC;android-android;11;JSbridge4.4.0;jointBridge;1.1.0',
@@ -25,21 +44,22 @@ def check_in(cookie):
     }
 
     response_json = requests.get(url=sign_url, params=param, headers=headers).json()
+#    print(response_json)
     check_json = requests.get(url=check_url, params=param, headers=headers).json()
     balance = check_json['balance']
     if response_json['errno'] == 0:
         points = response_json['points']
-        dic = {
-            'points': points,
-            'balance': balance
-        }
-        return dic
+#        dic = {
+#            'points': points,
+#            'balance': balance
+#        }
+        print('本次签到获取积分：'+str(points)+'，总积分：'+str(balance))
+        print('休息三秒，执行下一个账号'.center(50, '='))
+        time.sleep(3)
+#        return dic
     else:
-        pass
-    print('休息三秒，执行下一个账号'.center(50, '='))
-    time.sleep(3)
-
-    return "error"
+        print(response_json)
+#    return "error"
 
 # return list[bd_ck]
 def get_bdck():  # 方法 获取 bd_ck值 [系统变量传递]
@@ -81,6 +101,8 @@ def send_email(rs):
 if __name__ == '__main__':
     bdcklist = get_bdck()
     for ck in bdcklist:
-        rs = check_in(ck)
-        print(rs)
+        issvip(ck)
+        check_in(ck)
+#        rs = check_in(ck)
+#        print(rs)
 #       send_email(rs)
