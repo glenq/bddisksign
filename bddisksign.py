@@ -23,10 +23,11 @@ def issvip(cookie):
  
     if response_json['error_code'] == 0:
         is_svip = response_json['user_info']['is_svip']
-        username= response_json['user_info']['username']        
-        print('用户：'+username+', svip状态：' + str(is_svip))
+        username= response_json['user_info']['username']
+        logger.info('user info'.center(50,'-'))
+        logger.info('用户：'+username+', svip状态：' + str(is_svip))
     else:
-        print(response_json)
+        logger.info(response_json)
  
 
 def check_in(cookie):
@@ -53,12 +54,14 @@ def check_in(cookie):
 #            'points': points,
 #            'balance': balance
 #        }
-        print('本次签到获取积分：'+str(points)+'，总积分：'+str(balance))
-        print('休息三秒，执行下一个账号'.center(50, '='))
-        time.sleep(3)
+        logger.info('本次签到获取积分：'+str(points)+'，总积分：'+str(balance))
+        logger.info('response_json'.center(50, '-'))
+        logger.info(response_json)
+        logger.info('check_json'.center(50, '-'))
+        logger.info(check_json)
 #        return dic
     else:
-        print(response_json)
+        logger.info(response_json)
 #    return "error"
 
 # return list[bd_ck]
@@ -101,8 +104,10 @@ def send_email(rs):
 if __name__ == '__main__':
     bdcklist = get_bdck()
     for ck in bdcklist:
-        issvip(ck)
         check_in(ck)
+        issvip(ck)
+        logger.info('休息三秒，执行下一个账号'.center(50, '='))
+        time.sleep(3)
 #        rs = check_in(ck)
 #        print(rs)
 #       send_email(rs)
